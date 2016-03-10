@@ -1,0 +1,2 @@
+
+int primo(int n);
