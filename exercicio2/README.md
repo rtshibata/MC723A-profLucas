@@ -2,36 +2,33 @@
 ### Professor: Lucas Wanner
 ### Aluno: Renato Toshiaki Shibata -- RA:082674
 
-Optei por simular 4 programas com apenas um nível de cache (L1 de instruções e L1 de dados). Os programas escolhidos foram gzip_f2b e vortex_f2b.
-Devido ao tempo gasto para o entendimento do enunciado, apenas pude executar para esses 2 programas.
+#1)Introdução
+Optei por simular 4 programas com apenas um nível de cache (L1 de instruções e L1 de dados). Os programas escolhidos foram `gzip_f2b`,`vortex_f2b`,`parser_f2b` e `mesa_f2b`.
 
-Ao rodar o script `ex2.sh`, que executa para 10 diferentes tamanhos de bloco de cache L1, sendo esses tamanhos valores de potência na base 2, ou seja, de 2Bytes até 1024 Bytes ou 1KiloBytes. 
+Os resultados pertinentes a cada um deste programas se encontram nos subdiretórios de mesmo nome, conforme se pode ver aí na hierarquia de diretórios do git.
 
-Neste diretório se encontra os resultados da execução para cada uma das potências.
+Do script `ex2_gzip.sh`, basicamente foi rodado o seguinte comando na pasta `traces` do professor Lucas na rede do IC:
+>../../dinero4sbc/dineroIV -informat s -trname gzip_f2b -maxtrace 20 -l1-isize ${i_} -l1-dsize ${d_} -l1-ibsize ${ib_} -l1-dbsize ${db_} > ${out_}
 
-Basicamente os parametros escolhidos foram:
->../../dinero4sbc/dineroIV -informat s -trname ${name}-maxtrace 20 -l1-isize ${i_} -l1-dsize ${d_} -l1-ibsize ${ib_} -l1-dbsize ${db_} > ${out_}
+onde os parametros do tamanho dos blocos de cache de instrução foram fixados como:
+>ib_=16
 
-onde os parametros foram definidos inicialmente como:
->traces="/home/staff/lucas/mc723/traces/255.vortex.f2b"
+>db_=16
 
->p1="255.vortex.f2b"
+Então esse comando foi rodado várias vezes, alterando-se os valores do parametro `i_`e `d_` para potencias de 2, variando de 2KB até 1MB. Ou seja, foram coletados 10 resultados, de onde o valor mais importante na saída é a taxa de miss(`Miss rate`), que foi utilizada para plotar o gráfico. Isso significa que quanto menor o seu valor, melhor é a configuração, pois a CPU desperdiça menos ciclos devido a miss para encontrar o dado na cache e não precisa ir até a memória principal.
 
->home_ex2="/home/ec2010/ra082674/MC723-LucasWanner/exercicio2/output.txt"
+#2)Identificando melhor tamanho de cache 
 
->name="vortex_f2b"
+Desse modo, todos os outros parâmetros foram deixados constantes. As únicas variáveis eram os valores dos tamanhos das caches como explicado anteriormente.
 
->i_="16K"
+Procedimento análogo foi realizado para todos os outros programas para se descobrir o tamanho de cache ideal. Existe um script correspondente a cada um desses programas: `ex2_mesa.sh`,`ex2_vortex.sh`,`ex2_parser.sh`. 
 
->d_="16K"
+Percebemos que a taxa de miss(`miss rate`) da cache de instrução permanece a mesma enquanto a taxa de miss de cache dados varia. Desse modo notamos que eles são independentes entre si e decidi no mesmo script testar diversos tamanhos de caches para ambos instrução e dados ao mesmo tempo para um certo programa.
 
->ib=2
+Além disso, para o programa `vortex_f2b`, em seu script correspondente, resolvi fixar o tamanho dos blocos das caches de instrução e de dados para 512, ao invés de 16. Isso fez com que o `miss rate` fosse mais elevado para os mesmos valores de tamanho de cache testados nos outros 3 programas. Isso pode ser visto claramente na comparação entre os gráficos que está no arquivo de Excel `graficos_missrate.pdf`
 
->db=2
+#3) Identificando melhor tamanho dos blocos
+Pelo gráfico, podemos perceber que se tratam de funções monotônicas decrescentes. Ou seja, quanto maior o tamanho da cache, tanto de instruções como de dados, menor a taxa de miss. Com uma diferença de que para o caso da cache de instruções, a taxa de miss consegue ser zerada a partir de um certo tamanho da cache, sendo esse tamanho variando de programa para programa.
 
-Então esse comando foi rodado várias vezes, alterando-se os valores do parametro `ib_`e `db_` para potencias de 2, por exemplo, 4,8,16,32,etc. 
-
-Esse mesmo procedimento foi realizado para vortex.
-
-
-Infelizmente não houve tempo para análise dos dados para verificar a melhor configuração, combinação de tamanhos de cache.
+#4) Por que não foram usados outros parâmetros
+De acordo com todos os parâmetros disponíveis pelo `dineroIV`, através da opção `-help`. Podemos analisar: a politica de realocação tem manter o padrão mesmo, LRU(least recent used), pois segue o principio da localidade temporal. A politica de fetch deve manter o padrão também, sempre sob demanda, que é um equilibrio entre "always" e "miss". Politica de escrita, "write-back" seria o padrão e é o mais usado hoje em dia nos mais diversos micros devido a sua eficiência comprovada. 

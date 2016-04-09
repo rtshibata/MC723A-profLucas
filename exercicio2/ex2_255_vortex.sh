@@ -1,8 +1,6 @@
 #!/bin/sh
 #
-#executar script para coletar uma tabela com 10 combinações distintas de tamanho
-#para um programa
-#
+
 
 #supondo que me encontro na rede do IC
 traces="/home/staff/lucas/mc723/traces/255.vortex.f2b"
@@ -12,14 +10,11 @@ name="vortex_f2b"
 
 cd ${traces}
 
-
-
 #parametros a serem avaliados
 i_="16K"
 d_="16K"
-ib=2
-db=2
-
+ib=4
+db=4
 
 for j in $(seq 1 1 10)
 do
