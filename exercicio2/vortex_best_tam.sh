@@ -2,12 +2,12 @@
 #
 
 #supondo que ja se sabe os tamanhos de cache ideais
-best_i="64K"
+best_i="512K"
 best_d="1024k"
 
 #supondo que me encontro na rede do IC
-traces="/home/staff/lucas/mc723/traces/164.gzip.f2b"
-p1="best_tam_164.gzip.f2b"
+traces="/home/staff/lucas/mc723/traces/255.vortex.f2b"
+p1="best_tam_255.vortex.f2b"
 home_ex2="/home/ec2010/ra082674/MC723-LucasWanner/MC723A-profLucas/exercicio2/output.txt"
 
 cd ${traces}
@@ -31,9 +31,9 @@ for j in $(seq 1 1 10) #32,64,128,256,512, 1K,2K,4K,8K,16K
 		echo "instrucao: $ib_ B"
 		echo "---------"
 		#executa e joga output em output.txt na minha pasta no ic
-		../../dinero4sbc/dineroIV -informat s -trname gzip_f2b -maxtrace 20 -l1-isize ${i_} -l1-dsize ${d_} -l1-ibsize ${ib_} -l1-dbsize ${db_} > ${out_}
+		../../dinero4sbc/dineroIV -informat s -trname vortex_f2b -maxtrace 20 -l1-isize ${i_} -l1-dsize ${d_} -l1-ibsize ${ib_} -l1-dbsize ${db_} > ${out_}
 	done
 
-name="best_tam_gzip"
+name="best_tam_vortex"
 mv *.*[$name].* /gzip/${name}/
 
