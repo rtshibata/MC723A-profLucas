@@ -75,8 +75,8 @@ Ao se recompilar
 (como mostrado anteriormente) o simulador e executar o programa `hello.mips` após essas modificações nós temos como saída aquilo que se encontra no arquivo `hello_out.txt`, que se encontra no repositório.
 
 Observamos que não foi contado a instrução `add`nenhuma vez enquanto que a instrução `addu` foi contada 175 vezes. Isso era de se esperar, pois o MIPS prefere trabalhar com valores *unsigned* para processar linhas de código que não possuem natureza aritmética. 
+***???????NAO SEI   AJUDA A????????????????????***
 
------------------------
 ### 3)Avaliando o desempenho
 
 O meu RA é 082674. Desse modo, de acordo com a tabela na página do Exercício 3 do Prof. Lucas Wanner,  devo executar os seguintes programas:
@@ -91,7 +91,7 @@ Então acionei a flag **-s** para o **acsim** para gerar as estastísticas da si
 
 >make -f Makefile.archc
 
-Logo após, para cada um dos 3 programas, procurei em seus respectivos diretórios um shell script cujo nome eram `runme_small.sh`(para os programas ***jpeg decoder*** e ***fft***) e `runme_large.sh`(para o programa ***gsm coder***). Nesses shell scripts haviam o parâmetro de entrada para **-load** do simulador `mips.x`. Ou seja para o programa `jpeg` foi executado no terminal shell:  
+Logo após, para cada um dos 3 programas, procurei em seus respectivos diretórios um shell script cujo nome eram `runme_small.sh`(para os programas `jpeg` e `fft`) e `runme_large.sh`(para o programa `gsm`). Nesses shell scripts haviam o parâmetro de entrada para **-load** do simulador `mips.x`. Ou seja para o programa `jpeg` foi executado no terminal shell:  
 
 >./mips.x --load=jpeg/jpeg-6a/djpeg -dct int -ppm -outfile jpeg/output_small_decode.ppm jpeg/input_small.jpg
 
@@ -103,7 +103,6 @@ Para o programa `gsm`:
 
 As saídas após execução de cada um desses comandos estão nos seguintes arquivos, respectivamente:`jpeg1.txt`,`fft2.txt`e `gsm3.txt`.
 
---------------------------------
 ### 4) Calculando número de ciclos 
 Para calcular o número de ciclos, foi necessário identificar a qual classe de instrução se enquadra cada uma das instruções do MIPS. 
 
@@ -113,15 +112,6 @@ Para a classe **Acesso à memória**, que gastam 10 ciclos em média, as instru�
 *   lw
 *   sb
 *   sw
-*   lbu
-*   lh
-*   lhu
-*   lw
-*   lwl
-*   lwr
-*   sh
-*   swl
-*   swr
 
 Para a classe **Controle**, que gastam 3 ciclos em média, temos:
 *   beq
@@ -143,24 +133,5 @@ Desse modo a fórmula matemática para calcular **n**, o número totais de ciclo
 $$n = 10 \sum n_{A}+ 3 \sum n_{B}+ \sum n_{C}$$ 
 
 onde $$n_{A}$$ é o número de ciclos de uma instrução da classe **Acesso à memória**;   
-$$n_{B}$$ é o número de ciclos de uma instrução da classe **Controle** e     
-$$n_{C}$$ é o número de ciclos de uma instrução da classe **Outros** usados num programa
-
-Desse modo, para o programa ***jpeg decoder***, de acordo com a saída exposta no arquivo `jpeg1.txt` o número de ciclos totais foram:
-10*(197478+607399+100880+193+1465144+131+131+625831+8591+933405+403+403)+
-3*(13384+5154+8689+3527+111642+411546+2742+1495+699+315+0+0)+
-1*(1+1394721+1394721+30053+1184+88720+383+27+11914+0+2074738+0+320193+22449+5009+8448+154929+0+0+1289584+769229+917+287372+8373+45+18826+39771+0+51+87+48+0+47315+0+0+0)
-=**64984793**
-
-Desse modo, para o programa ***ftt***, de acordo com a saída exposta no arquivo `ftt2.txt` o número de ciclos totais foram:
-10*(245061+378308+82553+0+67625768+0+0+287876+137+61245632+0+0)+
-3*(4883721+9702669+9719174+123+31935763+23350312+982700+41301+1236757+2893426+0+0)+
-1*(1+69447241+4895001+8301117+9642567+4707230+442894+13637504+0+49742530+0+4608226+624649+22261251+4887747+25315282+741575+792524+35893766+34395700+24332764+174653+1093417+1231186+3714+80806+2660964+3722+12478+2677164+0+2774340+0+0+0)
-=**1878273201**
-
-Desse modo, para o programa ***gsm coder***, de acordo com a saída exposta no arquivo `gsm3.txt` o número de ciclos totais foram: 
-10*(181680+1336829+52437731+2571546+209932618+463620+463620+516255+22173746+63721008+434644+434644)+
-3*(8127632+2017909+2026829+8918+39594442+33350797+159085+2720+4817588+1836769+0+0)+
-1*(1+84599896+6679982+684233+4964294+633962+65039+1302175+0+258460114+0+33740973+11131024+22094712+232276+652754+115922+57971+144823660+120313049+22742+92728242+532617+0+1593680+126222369+0+0+0+0+0+126215143+0+0)
-=**4860374307**
-
+$$n_{B}$$ é o número de ciclos de uma instrução da classe **Controle** e $$n_{C}$$ é o número de ciclos de uma instrução da classe **Outros** usados num programa
+ 
