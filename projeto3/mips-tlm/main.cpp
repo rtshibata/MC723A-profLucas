@@ -35,8 +35,7 @@ int sc_main(int ac, char *av[])
 {
 
   //!  ISA simulator
-  mips mips_proc1("mips1");
-  mips mips_proc2("mips2");
+  mips mips_proc1("mips");
   ac_tlm_mem mem("mem", 100*1024*1024);
   ac_tlm_router router("router");
   ac_tlm_peripheral peripheral("peripheral"); 
@@ -45,29 +44,19 @@ int sc_main(int ac, char *av[])
   router.PERIPHERAL_port(peripheral.target_export); 
 
   mips_proc1.DM_port(router.target_export);
-  mips_proc2.DM_port(router.target_export);
+
 
 #ifdef AC_DEBUG
   ac_trace("mips_proc1.trace");
 #endif 
-  char **av_copy;
-  av_copy = (char**)malloc(sizeof(char*)*(ac)+1);
-  for(int i = 0; i < ac; i++){
-	av_copy[i] = (char*) malloc(strlen(av[i])+1);
-	strcpy(av_copy[i], av[i]);
-  }
+
   mips_proc1.init(ac, av);
-  cerr << endl;
-  mips_proc2.init(ac, av);
   cerr << endl;
 
   sc_start();
 
   mips_proc1.PrintStat();
   cerr << endl;
-  mips_proc2.PrintStat();
-  cerr << endl;
-
 
 #ifdef AC_STATS
   ac_stats_base::print_all_stats(std::cerr);
